@@ -1,1 +1,1 @@
-c:\nodejs\node app.js
+'C:\Program Files\nodejs\node.exe' app.js
