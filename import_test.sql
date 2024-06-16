@@ -43,7 +43,7 @@ CREATE TABLE funds (
   notes VARCHAR(255),
   borrower_id INT NOT NULL,
   FOREIGN KEY (individual_id) REFERENCES individuals(id),
-  FOREIGN KEY (borrower_id) REFERENCES borrowers(borrower_id)
+  FOREIGN KEY (borrower_id) REFERENCES borrowers(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
 
 CREATE TABLE loans (

@@ -8,7 +8,7 @@ const connection = new Mysql({
     port: '8080',
     user: 'root',
     password: 'test',
-    database: 'test'
+    database: 'bank'
 })
 
 // обработка параметров из формы.
@@ -24,8 +24,9 @@ function reqPost(request, response) {
 
         request.on('end', function () {
             var post = qs.parse(body);
-            // TODO
-            var sInsert = "INSERT INTO myarttable (text, description, keywords) VALUES (\"" + post['col1'] + "\",\"" + post['col2'] + "\",\"" + post['col3'] + "\")";
+            var sInsert = `INSERT INTO individuals (first_name, last_name, middle_name, passport, taxpayer_id, insurance_id, driver_licence, additional_docs, notes) 
+                    VALUES ("${post['col1']}","${post['col2']}","${post['col3']}","${post['col4']}","${post['col5']}","${post['col6']}","${post['col7']}","${post['col8']}","${post['col9']}")
+                    `;
             var results = connection.query(sInsert);
             console.log('Done. Hint: ' + sInsert);
         });
@@ -34,16 +35,27 @@ function reqPost(request, response) {
 
 // выгрузка массива данных.
 function ViewSelect(res) {
-    var results = connection.query('SHOW COLUMNS FROM myarttable');
+    var results = connection.query('SHOW COLUMNS FROM individuals');
     res.write('<tr>');
     for (let i = 0; i < results.length; i++)
         res.write('<td>' + results[i].Field + '</td>');
     res.write('</tr>');
-  // TODO
-    var results = connection.query('SELECT * FROM myarttable WHERE id>14 ORDER BY id DESC');
+    var results = connection.query('SELECT * FROM individuals ORDER BY id');
     for (let i = 0; i < results.length; i++)
-        // TODO
-        res.write('<tr><td>' + String(results[i].id) + '</td><td>' + results[i].text + '</td><td>' + results[i].description + '</td><td>' + results[i].keywords + '</td></tr>');
+        res.write(`
+            <tr>
+                <td>${String(results[i].id)}</td>
+                <td>${results[i].first_name}</td>
+                <td>${results[i].last_name}</td>
+                <td>${results[i].middle_name}</td>
+                <td>${results[i].passport}</td>
+                <td>${results[i].taxpayer_id}</td>
+                <td>${results[i].insurance_id}</td>
+                <td>${results[i].driver_licence}</td>
+                <td>${results[i].additional_docs}</td>
+                <td>${results[i].notes}</td>
+            </tr>
+        `);
 }
 
 function ViewVer(res) {
